@@ -1,0 +1,4 @@
+/Users/konradciemala/Documents/CPP/JA_projekt/build/CMakeFiles/app.dir
+/Users/konradciemala/Documents/CPP/JA_projekt/build/CMakeFiles/run.dir
+/Users/konradciemala/Documents/CPP/JA_projekt/build/CMakeFiles/edit_cache.dir
+/Users/konradciemala/Documents/CPP/JA_projekt/build/CMakeFiles/rebuild_cache.dir
