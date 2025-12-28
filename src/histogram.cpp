@@ -1,5 +1,5 @@
 #include "histogram.hpp"
-#include <algorithm> // Dla std::max_element
+#include <algorithm> 
 #include <string>
 #include <map>
 
@@ -8,7 +8,6 @@ std::vector<int> GenerateHistogram(const Image& grayscaleImage) {
     Color* pixels = LoadImageColors(grayscaleImage);
 
     for (int i = 0; i < grayscaleImage.width * grayscaleImage.height; i++) {
-        // W obrazie w skali szarości R, G i B są takie same.
         histogram[pixels[i].r]++;
     }
 
@@ -52,7 +51,6 @@ void DrawHistogram(const std::vector<int>& histogramData, Rectangle bounds, cons
         DrawRectangleRec(bar, Color{(unsigned char)i, (unsigned char)i, (unsigned char)i, 255});
     }
 
-    // Rysowanie linii progów
     for (int threshold : thresholds) {
         if (threshold >= 0 && threshold < 256) {
             float thresholdX = chartBounds.x + threshold * barWidth;
@@ -69,7 +67,6 @@ std::vector<int> GenerateColorHistogram(const Image& image, const std::vector<Co
     std::vector<int> histogram(palette.size(), 0);
     std::map<unsigned int, int> colorToIndex;
     for (size_t i = 0; i < palette.size(); ++i) {
-        // Tworzymy unikalny klucz dla każdego koloru
         unsigned int colorKey = (palette[i].r << 24) | (palette[i].g << 16) | (palette[i].b << 8) | palette[i].a;
         colorToIndex[colorKey] = i;
     }
@@ -119,7 +116,6 @@ void DrawColorHistogram(const std::vector<int>& histogramData, const std::vector
         };
         DrawRectangleRec(bar, palette[i]);
 
-        // Rysuj próbkę koloru pod słupkiem
         Rectangle swatch = { chartBounds.x + i * barWidth + barWidth/2 - 5, chartBounds.y + chartBounds.height + 5, 10, 10 };
         DrawRectangleRec(swatch, palette[i]);
         DrawRectangleLinesEx(swatch, 1, DARKGRAY);
@@ -144,5 +140,5 @@ int GetThresholdFromMouse(Vector2 mousePos, Rectangle bounds) {
         }
         return threshold;
     }
-    return -1; // Zwraca -1, jeśli mysz jest poza obszarem wykresu
+    return -1; 
 }

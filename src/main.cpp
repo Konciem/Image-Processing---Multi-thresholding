@@ -16,24 +16,19 @@ int main() {
 
     Font customFont = LoadFontEx("resources/anonymous_pro_bold.ttf", 40, 0, 250);
 
-    // stałe ui
     const float padding = 20.0f;
     const float topMargin = 40.0f;
     const float panelHeight = 120.0f; 
 
-    // definicja ukladu 2x2
     const float zoneWidth = (screenWidth - 3 * padding) / 2.0f;
     const float zoneHeight = (screenHeight - 3 * padding - topMargin - panelHeight) / 2.0f;
 
-    // dwa gorne obrazy
     Rectangle dropZone = { padding, padding + topMargin, zoneWidth, zoneHeight };
     Rectangle displayZoneOriginal = { padding * 2 + zoneWidth, padding + topMargin, zoneWidth, zoneHeight };
 
-    // dwa dolne obrazy
     Rectangle displayZoneGrayscale = { padding, padding * 2 + zoneHeight + topMargin, zoneWidth, zoneHeight };
     Rectangle displayZoneMultiThreshold = { padding * 2 + zoneWidth, padding * 2 + topMargin + zoneHeight, zoneWidth, zoneHeight };
 
-    // ui do wyboru kolorow
     Rectangle colorPickerPanel = { padding, screenHeight - panelHeight, screenWidth - 2 * padding, panelHeight - padding };
     vector<Rectangle> colorSwatches;
     int selectedColorIndex = 0;
@@ -42,10 +37,10 @@ int main() {
     vector<int> thresholds = {80, 160};
     vector<Color> multiColors = {BLACK, GRAY, WHITE};
 
-    int draggingThresholdIndex = -1; // Indeks przeciąganego progu (-1 jeśli żaden)
+    int draggingThresholdIndex = -1; 
 
     Texture2D originalTexture = { 0 }, grayscaleTexture = { 0 }, multiThresholdTexture = { 0 };
-    Image grayscaleImage = { 0 }; // obraz w skali szarosci przetrzymywany w pamieci
+    Image grayscaleImage = { 0 }; 
     vector<int> multiThresholdHistogramData;
     bool imageLoaded = false;
 
@@ -54,26 +49,24 @@ int main() {
     while (!WindowShouldClose()) {
 
         if (imageLoaded) {
-            // Interakcja z progami na histogramie
             if (CheckCollisionPointRec(GetMousePosition(), dropZone)) {
                 if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     int newThreshold = GetThresholdFromMouse(GetMousePosition(), dropZone);
                     if (newThreshold != -1) {
-                        // Sprawdź, czy kliknięto w pobliżu istniejącego progu, aby go przeciągnąć
+
                         for (size_t i = 0; i < thresholds.size(); ++i) {
-                            if (abs(newThreshold - thresholds[i]) < 5) { // 5px tolerancji
+                            if (abs(newThreshold - thresholds[i]) < 5) { 
                                 draggingThresholdIndex = i;
                                 break;
                             }
                         }
 
-                        // Dodawanie nowego progu (SHIFT + Klik)
                         if (draggingThresholdIndex == -1 && IsKeyDown(KEY_LEFT_SHIFT)) {
                             thresholds.push_back(newThreshold);
                             sort(thresholds.begin(), thresholds.end());
                             imageNeedsUpdate = true;
                         }
-                        // Usuwanie progu (CTRL/CMD + Klik)
+
                         else if (draggingThresholdIndex != -1 && (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_LEFT_SUPER))) {
                              thresholds.erase(thresholds.begin() + draggingThresholdIndex);
                              draggingThresholdIndex = -1;
@@ -88,10 +81,8 @@ int main() {
             }
         }
 
-
         // logika ui
         if (imageLoaded) {
-            // Sprawdzenie klikniecia na kwadraty z wybranymi kolorami
             for (size_t i = 0; i < colorSwatches.size(); i++) {
                 if (i < colorSwatches.size() && CheckCollisionPointRec(GetMousePosition(), colorSwatches[i]) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     selectedColorIndex = i;
@@ -136,7 +127,6 @@ int main() {
             int newThresholdValue = GetThresholdFromMouse(GetMousePosition(), dropZone);
             if (newThresholdValue != -1) {
                 thresholds[draggingThresholdIndex] = newThresholdValue;
-                // Zapobiegaj "przeskakiwaniu" progów
                 sort(thresholds.begin(), thresholds.end());
                 imageNeedsUpdate = true;
             }
@@ -147,7 +137,6 @@ int main() {
                 UnloadTexture(multiThresholdTexture);
             }
 
-            // Dopasuj liczbę kolorów do liczby progów
             multiColors.resize(thresholds.size() + 1, Color{(unsigned char)GetRandomValue(0,255), (unsigned char)GetRandomValue(0,255), (unsigned char)GetRandomValue(0,255), 255});
 
             Image multiThresholdImage = ImageCopy(grayscaleImage); 
@@ -166,7 +155,6 @@ int main() {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        // Rysowanie glownych paneli
         DrawText("Histogram (skala szarosci) | SHIFT+Click: dodaj, CTRL+Click: usun", dropZone.x, dropZone.y - 25, 10, DARKGRAY);
         if (imageLoaded) {
             DrawHistogram(GenerateHistogram(grayscaleImage), dropZone, thresholds);
@@ -212,7 +200,6 @@ int main() {
             DrawText("Podglad", displayZoneMultiThreshold.x + (displayZoneMultiThreshold.width - MeasureText("Podgląd", 20))/2, displayZoneMultiThreshold.y + zoneHeight/2 -10, 20, LIGHTGRAY);
         }
 
-        // Rysowanie panelu wyboru kolorow
         DrawRectangleRec(colorPickerPanel, Fade(LIGHTGRAY, 0.5f));
         DrawRectangleLinesEx(colorPickerPanel, 1, DARKGRAY);
         DrawText("Edytor Palety", colorPickerPanel.x + 10, colorPickerPanel.y + 10, 20, DARKGRAY);
@@ -231,7 +218,6 @@ int main() {
             }
 
             if (selectedColorIndex < (int)multiColors.size()) {
-                // Suwaki
                 float sliderWidth = 300;
                 float sliderHeight = 20;
                 Rectangle rSlider = { colorPickerPanel.x + 190 + (swatchSize + 10) * (float)multiColors.size() + 20, colorPickerPanel.y + 15, sliderWidth, sliderHeight };
