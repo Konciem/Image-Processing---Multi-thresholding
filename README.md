@@ -23,6 +23,8 @@ Kluczowym celem jest **porównanie wydajności** dwóch implementacji tego sameg
 * **Edytor Palety**: Intuicyjne suwaki RGB pozwalające na dostosowanie kolorów dla każdego zakresu jasności.
 * **Zarządzanie progami**: Dodawanie (SHIFT + PPM) i usuwanie (CTRL + PPM) progów bezpośrednio na wykresie histogramu.
 
+<img width="1181" height="827" alt="Image" src="https://github.com/user-attachments/assets/4f344d60-1baf-4afa-9c32-f6a27e641d13" />
+
 ## Zasada działania
 1.  **Analiza jasności**: Wczytany obraz jest konwertowany do skali szarości, gdzie każdy piksel przyjmuje wartość jasności.
 2.  **Podział na przedziały**: Użytkownik definiuje progi, które tworzą przedziały jasności (np. 0-80, 81-160, itd.).
