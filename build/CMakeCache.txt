@@ -222,6 +222,12 @@ JA_Projekt_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 JA_Projekt_SOURCE_DIR:STATIC=/Users/konradciemala/Documents/CPP/JA_projekt
 
+//Dependencies for the target
+lib_asm_LIB_DEPENDS:STATIC=general;/Users/konradciemala/Documents/CPP/JA_projekt/libraylib.a;general;-framework CoreVideo;general;-framework IOKit;general;-framework Cocoa;general;-framework GLUT;general;-framework OpenGL;general;-framework CoreFoundation;
+
+//Dependencies for the target
+lib_cpp_LIB_DEPENDS:STATIC=general;/Users/konradciemala/Documents/CPP/JA_projekt/libraylib.a;general;-framework CoreVideo;general;-framework IOKit;general;-framework Cocoa;general;-framework GLUT;general;-framework OpenGL;general;-framework CoreFoundation;
+
 
 ########################
 # INTERNAL cache entries

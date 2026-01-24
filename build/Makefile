@@ -117,6 +117,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named lib_cpp
+
+# Build rule for target.
+lib_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib_cpp
+.PHONY : lib_cpp
+
+# fast build rule for target.
+lib_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_cpp.dir/build.make CMakeFiles/lib_cpp.dir/build
+.PHONY : lib_cpp/fast
+
+#=============================================================================
+# Target rules for targets named lib_asm
+
+# Build rule for target.
+lib_asm: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib_asm
+.PHONY : lib_asm
+
+# fast build rule for target.
+lib_asm/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_asm.dir/build.make CMakeFiles/lib_asm.dir/build
+.PHONY : lib_asm/fast
+
+#=============================================================================
 # Target rules for targets named app
 
 # Build rule for target.
@@ -128,27 +154,6 @@ app: cmake_check_build_system
 app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/build
 .PHONY : app/fast
-
-#=============================================================================
-# Target rules for targets named run
-
-# Build rule for target.
-run: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 run
-.PHONY : run
-
-# fast build rule for target.
-run/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/build
-.PHONY : run/fast
-
-image_processing_asm.o: image_processing_asm.s.o
-.PHONY : image_processing_asm.o
-
-# target to build an object file
-image_processing_asm.s.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/image_processing_asm.s.o
-.PHONY : image_processing_asm.s.o
 
 src/histogram.o: src/histogram.cpp.o
 .PHONY : src/histogram.o
@@ -174,29 +179,61 @@ src/histogram.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/src/histogram.cpp.s
 .PHONY : src/histogram.cpp.s
 
-src/image_processing.o: src/image_processing.cpp.o
-.PHONY : src/image_processing.o
+src/image_processing_asm.o: src/image_processing_asm.s.o
+.PHONY : src/image_processing_asm.o
 
 # target to build an object file
-src/image_processing.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/src/image_processing.cpp.o
-.PHONY : src/image_processing.cpp.o
+src/image_processing_asm.s.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_asm.dir/build.make CMakeFiles/lib_asm.dir/src/image_processing_asm.s.o
+.PHONY : src/image_processing_asm.s.o
 
-src/image_processing.i: src/image_processing.cpp.i
-.PHONY : src/image_processing.i
+src/lib_asm_wrapper.o: src/lib_asm_wrapper.cpp.o
+.PHONY : src/lib_asm_wrapper.o
+
+# target to build an object file
+src/lib_asm_wrapper.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_asm.dir/build.make CMakeFiles/lib_asm.dir/src/lib_asm_wrapper.cpp.o
+.PHONY : src/lib_asm_wrapper.cpp.o
+
+src/lib_asm_wrapper.i: src/lib_asm_wrapper.cpp.i
+.PHONY : src/lib_asm_wrapper.i
 
 # target to preprocess a source file
-src/image_processing.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/src/image_processing.cpp.i
-.PHONY : src/image_processing.cpp.i
+src/lib_asm_wrapper.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_asm.dir/build.make CMakeFiles/lib_asm.dir/src/lib_asm_wrapper.cpp.i
+.PHONY : src/lib_asm_wrapper.cpp.i
 
-src/image_processing.s: src/image_processing.cpp.s
-.PHONY : src/image_processing.s
+src/lib_asm_wrapper.s: src/lib_asm_wrapper.cpp.s
+.PHONY : src/lib_asm_wrapper.s
 
 # target to generate assembly for a file
-src/image_processing.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/app.dir/build.make CMakeFiles/app.dir/src/image_processing.cpp.s
-.PHONY : src/image_processing.cpp.s
+src/lib_asm_wrapper.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_asm.dir/build.make CMakeFiles/lib_asm.dir/src/lib_asm_wrapper.cpp.s
+.PHONY : src/lib_asm_wrapper.cpp.s
+
+src/lib_cpp.o: src/lib_cpp.cpp.o
+.PHONY : src/lib_cpp.o
+
+# target to build an object file
+src/lib_cpp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_cpp.dir/build.make CMakeFiles/lib_cpp.dir/src/lib_cpp.cpp.o
+.PHONY : src/lib_cpp.cpp.o
+
+src/lib_cpp.i: src/lib_cpp.cpp.i
+.PHONY : src/lib_cpp.i
+
+# target to preprocess a source file
+src/lib_cpp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_cpp.dir/build.make CMakeFiles/lib_cpp.dir/src/lib_cpp.cpp.i
+.PHONY : src/lib_cpp.cpp.i
+
+src/lib_cpp.s: src/lib_cpp.cpp.s
+.PHONY : src/lib_cpp.s
+
+# target to generate assembly for a file
+src/lib_cpp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lib_cpp.dir/build.make CMakeFiles/lib_cpp.dir/src/lib_cpp.cpp.s
+.PHONY : src/lib_cpp.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -230,15 +267,19 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... run"
 	@echo "... app"
-	@echo "... image_processing_asm.o"
+	@echo "... lib_asm"
+	@echo "... lib_cpp"
 	@echo "... src/histogram.o"
 	@echo "... src/histogram.i"
 	@echo "... src/histogram.s"
-	@echo "... src/image_processing.o"
-	@echo "... src/image_processing.i"
-	@echo "... src/image_processing.s"
+	@echo "... src/image_processing_asm.o"
+	@echo "... src/lib_asm_wrapper.o"
+	@echo "... src/lib_asm_wrapper.i"
+	@echo "... src/lib_asm_wrapper.s"
+	@echo "... src/lib_cpp.o"
+	@echo "... src/lib_cpp.i"
+	@echo "... src/lib_cpp.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

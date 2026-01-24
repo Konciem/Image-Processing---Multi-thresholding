@@ -1,53 +1,40 @@
-# Wymagana minimalna wersja CMake
 cmake_minimum_required(VERSION 3.10)
-
-# Definicja projektu. Kluczowe jest dodanie języka ASM, aby CMake wiedział,
-# jak obsługiwać pliki .s (dla ARM będzie to clang, dla innych architektur GNU as).
 project(JA_Projekt LANGUAGES CXX ASM)
 
-# --- Konfiguracja kompilacji ---
-
-# Ustawienie standardu C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Dodanie flag kompilatora (analogicznie do CXXFLAGS w Makefile)
-add_compile_options(-Wall -Wextra)
-
-# --- Definicja celu (aplikacji) ---
-
-# Nazwa pliku wykonywalnego
-set(TARGET_NAME app)
-
-# Automatyczne wyszukiwanie plików źródłowych C++ i asemblera
-file(GLOB CPP_SOURCES "src/*.cpp")
-set(ASM_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/image_processing_asm.s)
-
-# Stworzenie pliku wykonywalnego z podanych źródeł
-add_executable(${TARGET_NAME} ${CPP_SOURCES} ${ASM_SOURCES})
-
-# Dodanie katalogu 'src' do ścieżek przeszukiwania plików nagłówkowych.
-# Dzięki temu #include "image_processing.hpp" zadziała poprawnie.
-target_include_directories(${TARGET_NAME} PRIVATE src)
-
-# --- Konfiguracja linkowania ---
-
-# Dodanie biblioteki Raylib (zakładamy, że libraylib.a jest w tym samym katalogu)
-# target_link_libraries łączy bibliotekę z naszym celem (aplikacją)
-target_link_libraries(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libraylib.a)
-
-# Dodawanie frameworków systemowych dla macOS (analogicznie do LDFLAGS w Makefile)
 if(APPLE)
-    target_link_libraries(${TARGET_NAME} PRIVATE
-        "-framework CoreVideo"
-        "-framework IOKit"
-        "-framework Cocoa"
-        "-framework GLUT"
+    set(OSX_FRAMEWORKS 
+        "-framework CoreVideo" 
+        "-framework IOKit" 
+        "-framework Cocoa" 
+        "-framework GLUT" 
         "-framework OpenGL"
+        "-framework CoreFoundation"
     )
 endif()
 
-# --- Dodatkowe reguły (opcjonalnie) ---
+#Biblioteka C++
+add_library(lib_cpp SHARED src/lib_cpp.cpp)
+set_target_properties(lib_cpp PROPERTIES OUTPUT_NAME "algo_cpp")
+target_include_directories(lib_cpp PRIVATE src)
 
-# Można dodać niestandardową regułę "run", podobną do tej z Makefile
-add_custom_target(run COMMAND ./${TARGET_NAME} DEPENDS ${TARGET_NAME})
+
+#Wyłączamy optymalizację (-O0) tylko dla tej biblioteki
+target_compile_options(lib_cpp PRIVATE -O0)
+
+target_link_libraries(lib_cpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libraylib.a ${OSX_FRAMEWORKS})
+
+#Biblioteka ASM
+add_library(lib_asm SHARED src/lib_asm_wrapper.cpp src/image_processing_asm.s)
+set_target_properties(lib_asm PROPERTIES OUTPUT_NAME "algo_asm")
+target_include_directories(lib_asm PRIVATE src)
+target_link_libraries(lib_asm PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libraylib.a ${OSX_FRAMEWORKS})
+
+#Aplikacja glowna
+set(TARGET_NAME app)
+add_executable(${TARGET_NAME} src/main.cpp src/histogram.cpp)
+target_include_directories(${TARGET_NAME} PRIVATE src)
+target_link_libraries(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libraylib.a dl ${OSX_FRAMEWORKS})

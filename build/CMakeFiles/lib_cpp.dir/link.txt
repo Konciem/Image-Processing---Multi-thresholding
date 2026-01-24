@@ -1,0 +1,1 @@
+/usr/bin/c++  -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o libalgo_cpp.dylib -install_name @rpath/libalgo_cpp.dylib CMakeFiles/lib_cpp.dir/src/lib_cpp.cpp.o  /Users/konradciemala/Documents/CPP/JA_projekt/libraylib.a -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL -framework CoreFoundation
