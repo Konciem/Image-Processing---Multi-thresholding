@@ -1,32 +1,32 @@
-# Multi-Thresholding - Projekt Języki Asemblerowe
+# Multi-Thresholding - Assembly Languages Project
 
-## Opis projektu
-Projekt realizuje aplikację do **wieloprogowania obrazu** w czasie rzeczywistym. Program pozwala na segmentację obrazu poprzez nakładanie wielu progów jasności, co umożliwia wyodrębnienie konkretnych detali z grafiki i przypisanie im zdefiniowanych przez użytkownika kolorów.
+## Project Description
+The project implements a real-time **image multi-thresholding** application. The program allows for image segmentation by applying multiple brightness thresholds, which enables the extraction of specific details from the graphics and assigning them user-defined colors.
 
-Głównym założeniem projektu jest pokazanie różnic w podejściu do programowania oraz wydajności między językiem wysokiego poziomu (C++) a niskopoziomowym asemblerem.
+The main objective of the project is to demonstrate the differences in programming approach and performance between a high-level language (C++) and low-level Assembly.
 
-## Cel projektu
-Kluczowym celem jest **porównanie wydajności** dwóch implementacji tego samego algorytmu przetwarzania obrazu:
-1.  **Implementacja w C++**: Wykorzystująca standardowe mechanizmy języka wysokiego poziomu.
-2.  **Implementacja w Asemblerze (ARM64 NEON)**: Zoptymalizowana pod kątem architektury procesora (Apple M1), wykorzystująca instrukcje wektorowe do równoległego przetwarzania wielu pikseli jednocześnie.
+## Project Goal
+The key goal is to **compare the performance** of two implementations of the same image processing algorithm:
+1. **C++ Implementation**: Utilizing standard high-level language mechanisms.
+2. **Assembly Implementation (ARM64 NEON)**: Optimized for the processor architecture (Apple M1), using vector instructions for parallel processing of multiple pixels simultaneously.
 
-## Wykorzystane technologie
-* **Język główny**: C++
-* **Asembler**: ARM64 (instrukcje NEON) – wykorzystywany do niskopoziomowej optymalizacji obliczeń.
-* **Biblioteka graficzna**: **Raylib** – użyta do stworzenia okienkowego interfejsu użytkownika, obsługi tekstur oraz renderowania UI.
-* **System budowania**: CMake.
+## Technologies Used
+* **Main Language**: C++
+* **Assembly**: ARM64 (NEON instructions) – used for low-level calculation optimization.
+* **Graphics Library**: **Raylib** – used to create the windowed user interface, handle textures, and render the UI.
+* **Build System**: CMake.
 
-## Główne funkcje
-* **Przetwarzanie w czasie rzeczywistym**: Zmiany progów lub kolorów są natychmiast widoczne na podglądzie.
-* **Interaktywny Histogram**: Wizualizacja rozkładu jasności pikseli, służąca jednocześnie jako panel sterowania progami.
-* **System Drag & Drop**: Możliwość wczytania obrazu PNG poprzez przeciągnięcie go do okna aplikacji.
-* **Edytor Palety**: Intuicyjne suwaki RGB pozwalające na dostosowanie kolorów dla każdego zakresu jasności.
-* **Zarządzanie progami**: Dodawanie (SHIFT + PPM) i usuwanie (CTRL + PPM) progów bezpośrednio na wykresie histogramu.
+## Main Features
+* **Real-time Processing**: Changes to thresholds or colors are immediately visible in the preview.
+* **Interactive Histogram**: Visualization of pixel brightness distribution, serving simultaneously as a threshold control panel.
+* **Drag & Drop System**: Ability to load PNG images by dragging them into the application window.
+* **Palette Editor**: Intuitive RGB sliders allowing for color adjustment for each brightness range.
+* **Threshold Management**: Adding (SHIFT + RMB) and removing (CTRL + RMB) thresholds directly on the histogram chart.
 
 <img width="1287" height="939" alt="Image" src="https://github.com/user-attachments/assets/2b56962f-3061-4c17-8483-3576d1e6e5bf" />
 
-## Zasada działania
-1.  **Analiza jasności**: Wczytany obraz jest konwertowany do skali szarości, gdzie każdy piksel przyjmuje wartość jasności.
-2.  **Podział na przedziały**: Użytkownik definiuje progi, które tworzą przedziały jasności (np. 0-80, 81-160, itd.).
-3.  **Mapowanie kolorów**: Algorytm sprawdza jasność każdego piksela i przypisuje mu kolor odpowiadający danemu przedziałowi.
-4.  **Optymalizacja**: W wersji asemblerowej proces ten odbywa się grupowo – procesor wykorzystuje rejestry wektorowe do przetwarzania wielu pikseli w jednej instrukcji, co znacząco przyspiesza generowanie obrazu wynikowego.
+## Principle of Operation
+1. **Brightness Analysis**: The loaded image is converted to grayscale, where each pixel takes on a brightness value.
+2. **Division into Intervals**: The user defines thresholds that create brightness intervals (e.g., 0-80, 81-160, etc.).
+3. **Color Mapping**: The algorithm checks the brightness of each pixel and assigns it a color corresponding to the given interval.
+4. **Optimization**: In the assembly version, this process takes place in groups – the processor uses vector registers to process multiple pixels in a single instruction, which significantly speeds up the generation of the resulting image.
